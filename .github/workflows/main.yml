@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
-          java-version: "17" # ✅ Use stable LTS version
+          java-version: "17"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -37,7 +37,12 @@ jobs:
           flutter clean
           flutter pub get
 
-      - name: Build Android APK (split per ABI)
+      # Build universal APK
+      - name: Build universal Android APK
+        run: flutter build apk --release
+
+      # Build split APKs per ABI (for Play Store)
+      - name: Build split-per-ABI APKs
         run: flutter build apk --release --split-per-abi
 
       - name: Build iOS (no codesign)
